@@ -1,67 +1,218 @@
-<div class="bg-white shadow-md rounded-lg p-6 w-full max-w-5xl">
-  
-    <!-- 🔹 Gestión de Horarios -->
-    <h3 class="text-xl font-semibold text-gray-800 mb-2">Administrar Horarios</h3>
-    <div class="grid grid-cols-3 gap-2 mb-4">
-      <input type="text" [(ngModel)]="nuevoHorario.carrera" placeholder="Carrera" class="border p-2 rounded">
-      <input type="text" [(ngModel)]="nuevoHorario.grupo" placeholder="Grupo" class="border p-2 rounded">
-      <input type="text" [(ngModel)]="nuevoHorario.aula" placeholder="Aula" class="border p-2 rounded">
-      <input type="text" [(ngModel)]="nuevoHorario.horainicio" placeholder="Hora" class="border p-2 rounded">
-      <input type="text" [(ngModel)]="nuevoHorario.horafin" placeholder="Hora" class="border p-2 rounded">
-      <input type="text" [(ngModel)]="nuevoHorario.materia" placeholder="Materia" class="border p-2 rounded">
-      <input type="text" [(ngModel)]="nuevoHorario.maestro" placeholder="Maestro" class="border p-2 rounded">
+<div class="admin-panel-container p-6 bg-gray-100 min-h-screen">
+
+  <!-- 🔹 Navegación entre secciones -->
+  <div class="flex space-x-4 border-b border-gray-300 pb-4 mb-6">
+    <div (click)="cambiarSeccion('usuarios')" [class.active-tab]="seccionActiva === 'usuarios'" class="tab-item">
+      🧑‍💻 Usuarios
     </div>
-    <button (click)="agregarHorario()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-4">
-      ➕ Agregar Horario
-    </button>
-  
-    <table class="w-full text-left border border-gray-300 bg-white shadow-md rounded-lg">
-      <thead class="bg-gray-800 text-white">
-        <tr>
-          <th class="p-3">Carrera</th>
-          <th class="p-3">Grupo</th>
-          <th class="p-3">Aula</th>
-          <th class="p-3">Hora de Inicio</th>
-          <th class="p-3">Hora de Fin</th>
-          <th class="p-3">Materia</th>
-          <th class="p-3">Maestro</th>
-          <th class="p-3">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (horario of horarios; track horario.horainicio  ) {
-          <tr class="border-b hover:bg-gray-200">
-            <td class="p-3">{{ horario.carrera }}</td>
-            <td class="p-3">{{ horario.grupo }}</td>
-            <td class="p-3">{{ horario.aula }}</td>
-            <td class="p-3">{{ horario.horainicio }}</td>
-            <td class="p-3">{{ horario.horafin}}</td>
-            <td class="p-3">{{ horario.materia }}</td>
-            <td class="p-3">{{ horario.maestro }}</td>
-            <td class="p-3">
-              <button (click)="eliminarHorario($index)" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
-                ❌ Eliminar
-              </button>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  
-    <!-- 🔹 Gestión de Jefes de Grupo -->
-    <h3 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Jefes de Grupo</h3>
-    <div class="flex gap-2 mb-4">
-      <input type="text" [(ngModel)]="nuevoJefe" placeholder="Nombre del Jefe" class="border p-2 rounded">
-      <button (click)="agregarJefe()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-        ➕ Agregar
-      </button>
+    <div (click)="cambiarSeccion('materias')" [class.active-tab]="seccionActiva === 'materias'" class="tab-item">
+      📚 Materias
     </div>
-    <ul class="list-disc pl-5">
-      @for (jefe of jefesGrupo; track jefe) {
-        <li class="text-gray-600">{{ jefe }}</li>
-      }
-    </ul>
-  
-    
+    <div (click)="cambiarSeccion('maestros')" [class.active-tab]="seccionActiva === 'maestros'" class="tab-item">
+      👨‍🏫 Maestros
+    </div>
+    <div (click)="cambiarSeccion('jefes')" [class.active-tab]="seccionActiva === 'jefes'" class="tab-item">
+      🎓 Jefes de Grupo
+    </div>
+    <div (click)="cambiarSeccion('asistencias')" [class.active-tab]="seccionActiva === 'asistencias'" class="tab-item">
+      📋 Asistencias
+    </div>
   </div>
+
+  <!-- 🔹 Sección de Usuarios -->
+  @if (seccionActiva === 'usuarios') {
+    <div class="card">
+      <h3 class="card-title">Gestión de Usuarios</h3>
+
+      <!-- Formulario para agregar usuarios -->
+      <div class="grid grid-cols-2 gap-2 mb-4">
+        <input type="text" [(ngModel)]="nuevoUsuario.username" placeholder="Usuario" class="input-field">
+        <input type="password" [(ngModel)]="nuevoUsuario.password" placeholder="Contraseña" class="input-field">
+        <input type="text" [(ngModel)]="nuevoUsuario.nombreCompleto" placeholder="Nombre Completo" class="input-field">
+        
+        <!-- Estado del Usuario -->
+        <select [(ngModel)]="nuevoUsuario.estado" class="input-field">
+          <option value="Activo">Activo</option>
+          <option value="Baja">Baja</option>
+        </select>
+
+        <!-- Rol del Usuario -->
+        <select [(ngModel)]="nuevoUsuario.rol" class="input-field">
+          <option value="">Seleccione un Rol</option>
+          <option value="Administrador">Administrador</option>
+          <option value="Profesor">Profesor</option>
+          <option value="Jefe de Grupo">Jefe de Grupo</option>
+        </select>
+      </div>
+
+      <!-- Campos adicionales para Profesores -->
+      @if (nuevoUsuario.rol === 'Profesor') {
+        <div class="grid grid-cols-2 gap-2 mb-4">
+          <input type="text" [(ngModel)]="nuevoUsuario.numeroEmpleado" placeholder="Número de Empleado" class="input-field">
+          <div>
+            <label class="block text-gray-700">Materias que imparte:</label>
+            @for (materia of materias; track materia) {
+              <div>
+                <input type="checkbox" [(ngModel)]="nuevoUsuario.materiasImparte" [value]="materia"> {{ materia }}
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Campos adicionales para Jefes de Grupo -->
+      @if (nuevoUsuario.rol === 'Jefe de Grupo') {
+        <div class="grid grid-cols-2 gap-2 mb-4">
+          <input type="text" [(ngModel)]="nuevoUsuario.numeroCuenta" placeholder="Número de Cuenta" class="input-field">
+          <div>
+            <label class="block text-gray-700">Carreras asignadas:</label>
+            @for (carrera of carreras; track carrera) {
+              <div>
+                <input type="checkbox" [(ngModel)]="nuevoUsuario.carrerasAsignadas" [value]="carrera"> {{ carrera }}
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <button (click)="agregarDato()" class="btn-success">➕ Agregar Usuario</button>
+
+      <!-- Tabla de Usuarios Registrados -->
+      <table class="table mt-4">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Contraseña</th>
+            <th>Nombre Completo</th>
+            <th>Rol</th>
+            <th>Detalles</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+      
+        <tbody>
+          @for (usuario of usuarios; track usuario.username) {
+            <tr>
+              <td>
+                @if (usuario?.editando) {
+                  <input type="text" [(ngModel)]="usuario.username" class="input-field">
+                } @else {
+                  {{ usuario.username }}
+                }
+              </td>
+        
+              <td>
+                @if (usuario?.editando) {
+                  <input type="password" [(ngModel)]="usuario.password" class="input-field">
+                } @else {
+                  {{ usuario.password }}
+                }
+              </td>
+        
+              <td>
+                @if (usuario?.editando) {
+                  <input type="text" [(ngModel)]="usuario.nombreCompleto" class="input-field">
+                } @else {
+                  {{ usuario.nombreCompleto }}
+                }
+              </td>
+        
+              <td>
+                @if (usuario?.editando) {
+                  <select [(ngModel)]="usuario.rol" class="input-field">
+                    <option value="Administrador">Administrador</option>
+                    <option value="Profesor">Profesor</option>
+                    <option value="Jefe de Grupo">Jefe de Grupo</option>
+                  </select>
+                } @else {
+                  {{ usuario.rol }}
+                }
+              </td>
+        
+              <td>
+                <button (click)="toggleDetalles(usuario.username)">
+                  {{ mostrarDetalles[usuario.username] ? '🔼 Ocultar' : '🔽 Ver' }}
+                </button>
+              </td>
+        
+              <td class="flex space-x-2">
+                @if (!usuario?.editando) {
+                  <button (click)="activarEdicion(usuario)" class="btn-edit">📝 Modificar</button>
+                  <button (click)="eliminarUsuario($index)" class="btn-danger">❌ Eliminar</button>
+                } @else {
+                  <button (click)="guardarCambios(usuario)" class="btn-success">💾 Guardar</button>
+                  <button (click)="cancelarEdicion(usuario)" class="btn-cancel">❌ Cancelar</button>
+                }
+              </td>
+            </tr>
+        
+            <!-- 🔹 Detalles adicionales -->
+            @if (mostrarDetalles[usuario.username]) {
+              <tr>
+                <td colspan="6" class="bg-gray-100 p-3">
+                  @if (usuario.rol === 'Profesor') {
+                    <input type="text" [(ngModel)]="usuario.numeroEmpleado" placeholder="Número de Empleado" class="input-field">
+                    <div>
+                      <label class="block text-gray-700">Materias que imparte:</label>
+                      @for (materia of materias; track materia) {
+                        <div>
+                          <input type="checkbox" [(ngModel)]="usuario.materiasImparte" [value]="materia"> {{ materia }}
+                        </div>
+                      }
+                    </div>
+                  }
+        
+                  @if (usuario.rol === 'Jefe de Grupo') {
+                    <input type="text" [(ngModel)]="usuario.numeroCuenta" placeholder="Número de Cuenta" class="input-field">
+                    <div>
+                      <label class="block text-gray-700">Carreras asignadas:</label>
+                      @for (carrera of carreras; track carrera) {
+                        <div>
+                          <input type="checkbox" [(ngModel)]="usuario.carrerasAsignadas" [value]="carrera"> {{ carrera }}
+                        </div>
+                      }
+                    </div>
+                  }
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+        
+      </table>
+
+    </div>
+  }
+
   
+
+  <!-- 🔹 Sección de Maestros -->
+  @if (seccionActiva === 'maestros') {
+    <div class="card">
+      <h3 class="card-title">Gestión de Maestros</h3>
+      @for (maestro of maestros; track maestro.nombre) {
+        <p>👨‍🏫 {{ maestro.nombre }} - {{ maestro.numeroEmpleado }}</p>
+      }
+    </div>
+  }
+
+  <!-- 🔹 Sección de Jefes de Grupo -->
+  @if (seccionActiva === 'jefes') {
+    <div class="card">
+      <h3 class="card-title">Gestión de Jefes de Grupo</h3>
+      @for (jefe of jefesGrupo; track jefe.nombre) {
+        <p>🎓 {{ jefe.nombre }} - {{ jefe.carrerasAsignadas.join(', ') }}</p>
+      }
+    </div>
+  }
+
+  <!-- 🔹 Sección de Asistencias -->
+  @if (seccionActiva === 'asistencias') {
+    <div class="card">
+      <h3 class="card-title">Consulta de Asistencias</h3>
+      @for (asistencia of asistencias; track asistencia.fecha) {
+        <p>📅 {{ asistencia.fecha }} - {{ asistencia.maestro }} - {{ asistencia.estado }}</p>
+      }
+    </div>
+  }
+</div>

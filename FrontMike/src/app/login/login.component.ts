@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -11,12 +12,12 @@ import { FormsModule } from '@angular/forms';
 export class LoginComponent {
   username = '';
   password = '';
-  role = '';
 
-  @Output() loginSuccess = new EventEmitter<string>(); // ✅ Emitimos el rol del usuario
+  @Output() loginSuccess = new EventEmitter<string>();
+
+  constructor(private router: Router) {}
 
   login() {
-    // 🔹 Simulación de roles basados en usuario/contraseña
     const users = [
       { username: 'admin', password: '1234', role: 'Administrador' },
       { username: 'profesor', password: '5678', role: 'Profesor' },
@@ -26,9 +27,26 @@ export class LoginComponent {
     const user = users.find(u => u.username === this.username && u.password === this.password);
 
     if (user) {
-      this.loginSuccess.emit(user.role); // ✅ Enviamos el rol al dashboard
+      this.loginSuccess.emit(user.role);
+
+      switch (user.role) {
+        case 'Administrador':
+          this.router.navigate(['/admin']);
+          break;
+        case 'Profesor':
+          this.router.navigate(['/profesor']);
+          break;
+        case 'Jefe de Grupo':
+          this.router.navigate(['/jefe']);
+          break;
+        default:
+          this.router.navigate(['/']);
+      }
     } else {
       alert('❌ Credenciales incorrectas');
     }
+  }
+  regresarAHorarios() {
+    this.router.navigate(['/']); // ✅ Redirección directa a la página principal (Dashboard + Horarios)
   }
 }

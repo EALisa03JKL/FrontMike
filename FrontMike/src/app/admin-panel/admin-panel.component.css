@@ -1,0 +1,78 @@
+/* Contenedor General */
+.admin-panel-container {
+    background-color: #f9fafb;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Diseño de Tabs */
+  .tab-item {
+    cursor: pointer;
+    padding: 10px 20px;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    font-weight: 600;
+  }
+  
+  .tab-item:hover {
+    color: #3b82f6;
+  }
+  
+  .active-tab {
+    border-bottom: 3px solid #3b82f6;
+    color: #3b82f6;
+  }
+  
+  /* Tarjetas */
+  .card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-title {
+    font-size: 1.5rem;
+    color: #1f2937;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  /* Estilos para Campos de Entrada */
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: #f3f4f6;
+  }
+  
+  /* Botones */
+  .btn-success {
+    background-color: #10b981;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .btn-danger {
+    background-color: #ef4444;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  /* Tablas */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table th, .table td {
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+  }
+  
