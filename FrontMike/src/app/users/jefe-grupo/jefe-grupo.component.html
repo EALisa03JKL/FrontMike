@@ -1,0 +1,39 @@
+<div class="mb-6">
+  <h2 class="text-xl font-bold text-center bg-blue-600 text-white p-2 rounded">
+    Horario de Clases - Jefe de Grupo
+  </h2>
+  <table class="w-full text-left border border-gray-300 bg-white shadow-md rounded-lg mt-2">
+    <thead>
+      <tr class="bg-gray-800 text-white">
+        <th class="p-3">Hora</th>
+        <th class="p-3">Materia</th>
+        <th class="p-3">Grupo</th>
+        <th class="p-3">Aula</th>
+        <th class="p-3">Tema de la Clase</th>
+        <th class="p-3 text-center">Asistencia</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let horario of horarios" class="border-b hover:bg-gray-200">
+        <td class="p-3">{{ horario.hora }}</td>
+        <td class="p-3">{{ horario.materia }}</td>
+        <td class="p-3">{{ horario.grupo }}</td>
+        <td class="p-3">{{ horario.aula }}</td>
+        <td class="p-3">{{ horario.tema }}</td>
+        <td class="p-3 text-center">
+          <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-700 mr-2"
+                  (click)="marcarAsistencia(horario, true)">
+            ✅ Asistió
+          </button>
+          <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
+                  (click)="marcarAsistencia(horario, false)">
+            ❌ No Asistió
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="horarios.length === 0">
+        <td colspan="6" class="text-center p-3 text-gray-500">No hay horarios disponibles.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

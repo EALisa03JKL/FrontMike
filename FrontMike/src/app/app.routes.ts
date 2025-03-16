@@ -3,6 +3,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { HorariosComponent } from './horarios/horarios.component';
+import { JefeGrupoComponent } from './users/jefe-grupo/jefe-grupo.component';
 
 export const routes: Routes = [
   {
@@ -13,7 +14,7 @@ export const routes: Routes = [
       { path: 'login', component: LoginComponent }, // Login en ruta
       { path: 'admin', component: AdminPanelComponent },
      // { path: 'profesor', component: ProfesorComponent },
-      //{ path: 'jefe', component: JefeGrupoComponent }
+      { path: 'jefe', component: JefeGrupoComponent }
     ]
   },
   { path: '**', redirectTo: '' } // Redirección por defecto
